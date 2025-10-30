@@ -1,31 +1,30 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;  // 用于 List
-using UnityEngine.Events;         // 用于 UnityEvent（如果需要）
 
 public class MeteorSpawner : MonoBehaviour
 {
     [Header("GameManager 引用")]
     public GameManager gameManager;    // 拖拽 GameManager 对象到此字段
 
-    [Header("默认模式设置 (Menu)")]
-    public GameObject[] defaultPrefabs;  // Menu 模式下的多种预制体数组（e.g., 背景粒子或演示陨石）
-    public float defaultSpawnInterval = 0.5f;  // Menu 模式发射间隔（秒）
+    [Header("菜单模式设置 (Menu)")]
+    public GameObject[] menuPrefabs;   // 菜单模式下的多种预制体数组（e.g., 背景粒子或演示陨石）
+    public float menuSpawnInterval = 0.5f;  // 菜单模式生成间隔（秒）
 
     [Header("游戏模式设置 (Playing)")]
-    public GameObject[] gamePrefabs;     // Playing 模式下的另一种预制体数组（e.g., 游戏敌人）
-    public float gameSpawnInterval = 1f;    // Playing 模式发射间隔（秒，可选调整）
+    public GameObject[] gamePrefabs;     // 游戏模式下的另一种预制体数组（e.g., 游戏敌人）
+    public float gameSpawnInterval = 1f;    // 游戏模式生成间隔（秒，可选调整）
 
     [Header("通用设置")]
     public float minSpeed = 50f;         // 最小速度
     public float maxSpeed = 150f;        // 最大速度
     public float spawnRadius = 0.5f;     // 生成半径（避免重叠）
     public float maxDeviationAngle = 30f; // 最大偏离角度（度，围绕对准方向）
-    public float meteorLifetime = 120f;  // 每枚物体的生命周期（秒）
+    public float objectLifetime = 120f;  // 每枚物体的生命周期（秒）
 
     private Coroutine spawnCoroutine;    // 当前运行的协程引用，用于停止
     private List<GameObject> activeObjects = new List<GameObject>();  // 跟踪当前生成的物体
-    private GameManager.GameState lastState;         // 上次状态，用于检测变化
+    private GameManager.GameState lastState;  // 上次状态，用于检测变化
 
     void Start()
     {
@@ -64,9 +63,9 @@ public class MeteorSpawner : MonoBehaviour
         }
 
         // Menu 或 Playing：切换预制体并清理旧物体（如果模式不同）
-        GameObject[] newPrefabs = (newState == GameManager.GameState.Playing) ? gamePrefabs : defaultPrefabs;
-        float newInterval = (newState == GameManager.GameState.Playing) ? gameSpawnInterval : defaultSpawnInterval;
-
+        GameObject[] newPrefabs = (newState == GameManager.GameState.Playing) ? gamePrefabs : menuPrefabs;
+        float newInterval = (newState == GameManager.GameState.Playing) ? gameSpawnInterval : menuSpawnInterval;
+        Debug.Log(newInterval);
         // 停止当前协程
         if (spawnCoroutine != null)
         {
@@ -130,7 +129,7 @@ public class MeteorSpawner : MonoBehaviour
             rb.angularVelocity = Random.insideUnitSphere * 5f;
 
             // 7. 设置生命周期（自动销毁并从列表移除）
-            StartCoroutine(DestroyAfterTime(obj, meteorLifetime));
+            StartCoroutine(DestroyAfterTime(obj, objectLifetime));
 
             // 等待下一轮生成
             yield return new WaitForSeconds(interval);

@@ -1,127 +1,88 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-// 用于事件系统
-
-// 用于重载场景
 
 public class GameManager : MonoBehaviour
 {
     // 游戏状态枚举
-    public enum GameState {
+    public enum GameState
+    {
         Menu,      // 主菜单（游戏未开始）
         Playing,   // 游戏进行中
         GameOver,  // 游戏结束
         Victory    // 胜利（可选）
     }
 
-    [Header("游戏配置")] public int maxHealth = 10; // 最大生命
+    [Header("当前状态")]
+    public GameState currentState = GameState.Menu;  // 默认主菜单状态
 
-    public int initialScore; // 初始分数
+    // 事件：通知其他脚本（如UI、Spawner）状态变化
+    public UnityEvent onStateChanged;    // 通用状态变化事件
+    public UnityEvent onGameStart;       // 游戏开始（Menu -> Playing）
+    public UnityEvent onGameOver;        // 游戏结束事件
+    public UnityEvent onVictory;         // 胜利事件
 
-    // 全局变量（运行时数据）
-    [Header("当前状态")] public GameState currentState = GameState.Menu;
-
-    public int currentHealth;
-    public int currentScore;
-    public int currentWave = 1; // 当前波次
-    public int maxWaves = 3; // MVP总波次
-
-    // 事件：通知其他脚本（如UI、Spawner）
-    public UnityEvent onScoreChanged; // 分数变事件
-    public UnityEvent onHealthChanged; // 生命变事件
-    public UnityEvent onWaveChanged; // 波次变事件
-    public UnityEvent onGameOver; // 游戏结束事件
-
-    public UnityEvent onVictory; // 胜利事件
-
-    // 单例实例
+    // 单例模式（可选，便于全局访问）
     public static GameManager Instance { get; private set; }
 
-    
-    private void Awake()
+    void Awake()
     {
-        // 单例逻辑：确保只有一个
+        // 单例初始化
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 跨场景不销毁
-            InitializeGame(); // 初始化
+            DontDestroyOnLoad(gameObject);  // 场景切换时保留
         }
         else
         {
-            Destroy(gameObject); // 多余的销毁
+            Destroy(gameObject);
         }
     }
-    
-    private void InitializeGame()
+
+    void Start()
     {
-        currentHealth = maxHealth;
-        currentScore = initialScore;
-        currentWave = 1;
-        currentState = GameState.Playing;
-        Time.timeScale = 1f; // 确保游戏运行
-        Debug.Log("游戏初始化：生命=" + currentHealth + ", 波次=1");
+        // 初始状态通知
+        NotifyStateChange();
     }
 
-    // 加分方法（拦截陨石调用）
-    public void AddScore(int amount)
+    // 公共方法：切换游戏状态
+    public void SetState(GameState newState)
     {
-        if (currentState != GameState.Playing) return;
-        currentScore += amount;
-        onScoreChanged?.Invoke(); // 触发UI更新
-        Debug.Log("分数+ " + amount + "，当前: " + currentScore);
+        if (currentState == newState)
+            return;  // 避免重复切换
+
+        GameState oldState = currentState;
+        currentState = newState;
+
+        // 特定状态处理
+        switch (newState)
+        {
+            case GameState.Playing:
+                if (oldState == GameState.Menu)
+                {
+                    onGameStart?.Invoke();  // 触发游戏开始事件
+                }
+                break;
+            case GameState.GameOver:
+                onGameOver?.Invoke();    // 触发游戏结束事件
+                break;
+            case GameState.Victory:
+                onVictory?.Invoke();     // 触发胜利事件
+                break;
+        }
+
+        // 通用状态变化通知
+        NotifyStateChange();
     }
 
-    // 扣血方法（陨石撞地球调用）
-    public void TakeDamage(int damage = 1)
+    // 公共方法：获取当前状态（bool 包装，便于旧代码兼容）
+    public bool IsPlaying()
     {
-        if (currentState != GameState.Playing) return;
-        currentHealth -= damage;
-        onHealthChanged?.Invoke();
-
-        if (currentHealth <= 0)
-            GameOver();
-        else
-            Debug.Log("生命- " + damage + "，剩余: " + currentHealth);
+        return currentState == GameState.Playing;
     }
 
-    // 下一波方法（波次结束时调用）
-    public void NextWave()
+    // 私有方法：通知状态变化（可扩展为事件订阅）
+    private void NotifyStateChange()
     {
-        if (currentState != GameState.Playing) return;
-        currentWave++;
-        onWaveChanged?.Invoke();
-
-        if (currentWave > maxWaves)
-            Victory();
-        else
-            Debug.Log("进入波次 " + currentWave);
-        // 这里可触发Spawner生成新陨石
-    }
-
-    // 游戏结束
-    private void GameOver()
-    {
-        currentState = GameState.GameOver;
-        Time.timeScale = 0f;
-        onGameOver?.Invoke();
-        Debug.Log("游戏结束！最终分数: " + currentScore);
-    }
-
-    // 胜利
-    private void Victory()
-    {
-        currentState = GameState.Victory;
-        Time.timeScale = 0f;
-        onVictory?.Invoke();
-        Debug.Log("胜利！拦截率高，最终分数: " + currentScore);
-    }
-
-    // 重启游戏（UI按钮调用）
-    public void RestartGame()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 重载当前场景
+        onStateChanged?.Invoke();
     }
 }
