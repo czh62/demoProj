@@ -7080,11 +7080,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteorPrefab: {fileID: 4512647291275498003, guid: 8691ac9a70d830742a67c2ac8d4a5d1b, type: 3}
-  meteorCount: 20
-  minSpeed: 50
-  maxSpeed: 150
-  spawnRadius: 50
-  maxDeviationAngle: 0
+  meteorCount: 100
+  minSpeed: 150
+  maxSpeed: 350
+  spawnRadius: 500
+  maxDeviationAngle: 2
   spawnInterval: 0.5
 --- !u!1 &1547097874
 GameObject:
