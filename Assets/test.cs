@@ -1,15 +1,13 @@
+using TMPro;
 using UnityEngine;
+// Button 需要
 
-public class test : MonoBehaviour
+// TMP_Text 需要
+
+public class Test : MonoBehaviour
 {
+    [Header("TMP 文本引用（可选）")] public TMP_Text buttonText; // 拖拽 Button 下的 TMP_Text
 
-    void Start()
-    {
-    }
-
-    public void OnDropdownChanged(int index)  // 这个函数会被事件调用
-    {
-        Debug.Log("选中了第 " + index + " 个选项！");  // 示例：打印索引
-        // 这里加逻辑，比如切换颜色：GetComponent<Renderer>().material.color = Color.red;
-    }
+    [Header("游戏管理器引用")] public GameManager gameManager; // 你的 GameManager 单例
+    
 }

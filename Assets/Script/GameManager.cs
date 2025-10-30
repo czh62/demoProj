@@ -8,12 +8,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // 游戏状态枚举
-    public enum GameState
-    {
-        Playing,
-        Paused,
-        GameOver,
-        Victory
+    public enum GameState {
+        Menu,      // 主菜单（游戏未开始）
+        Playing,   // 游戏进行中
+        GameOver,  // 游戏结束
+        Victory    // 胜利（可选）
     }
 
     [Header("游戏配置")] public int maxHealth = 10; // 最大生命
@@ -21,7 +20,7 @@ public class GameManager : MonoBehaviour
     public int initialScore; // 初始分数
 
     // 全局变量（运行时数据）
-    [Header("当前状态")] public GameState currentState = GameState.Playing;
+    [Header("当前状态")] public GameState currentState = GameState.Menu;
 
     public int currentHealth;
     public int currentScore;
@@ -39,6 +38,7 @@ public class GameManager : MonoBehaviour
     // 单例实例
     public static GameManager Instance { get; private set; }
 
+    
     private void Awake()
     {
         // 单例逻辑：确保只有一个
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject); // 多余的销毁
         }
     }
-
+    
     private void InitializeGame()
     {
         currentHealth = maxHealth;
@@ -98,21 +98,6 @@ public class GameManager : MonoBehaviour
         else
             Debug.Log("进入波次 " + currentWave);
         // 这里可触发Spawner生成新陨石
-    }
-
-    // 暂停/恢复
-    public void TogglePause()
-    {
-        if (currentState == GameState.Playing)
-        {
-            currentState = GameState.Paused;
-            Time.timeScale = 0f;
-        }
-        else if (currentState == GameState.Paused)
-        {
-            currentState = GameState.Playing;
-            Time.timeScale = 1f;
-        }
     }
 
     // 游戏结束
