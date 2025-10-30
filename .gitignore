@@ -1,0 +1,133 @@
+﻿# 通用文件夹（忽略Unity和项目通用临时/库文件）
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# OS 生成的文件（操作系统自动创建的临时文件）
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db.meta
+
+# Visual Studio / MonoDevelop / Rider 生成的文件（IDE项目文件）
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+ExportedObj/
+.consulo/
+
+# Unity3D 生成的元数据文件（崩溃报告和数据库相关）
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+mono_crash.*
+
+# 构建输出文件（编译生成的包和应用）
+*.apk
+*.aab
+*.unitypackage
+*.unitypackages
+*.unitypackage.meta
+*.app
+
+# 崩溃分析工具生成的文件
+crashlytics-build.properties
+
+# Gradle 缓存目录（Android构建缓存）
+.gradle/
+
+# Visual Studio 缓存目录
+.vs/
+.vscode/
+.vsconfig
+
+# Rider / JetBrains IDE 文件（项目配置和缓存）
+.idea/
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# 包管理（忽略Packages文件夹，但保留manifest文件）
+/Packages/*
+!/Packages/manifest.json
+!/Packages/packages-lock.json
+
+# 内存捕获和录制文件（可能包含敏感数据且体积大）
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# 资产元数据（仅当对应资产被忽略时忽略meta文件）
+!/[Aa]ssets/**/*.meta
+
+# 自动生成的JetBrains Rider插件
+/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# OS X 生成文件夹
+[Oo]SGenerated/
+
+# Android 相关文件（项目配置和构建缓存）
+*.iml
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/captures
+.externalNativeBuild
+.cxx
+
+# Xcode 项目文件（iOS构建相关，保留默认项目）
+*.xcodeproj
+!default.xcodeproj
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/xcuserdata
+*.xcodeproj/project.pbxproj
+*.xcodeproj/xcshareddata
+*.xcworkspace
+!default.xcworkspace
+*.xcworkspace/xcuserdata
+*.xcworkspace/contents.xcworkspacedata
+*.xcworkspace/xcshareddata
+
+# Blender 资产导入文件（Unity支持Blender，忽略备份文件）
+*.blend1
+*.blend1.meta
+
+# 测试运行器生成的文件（初始化测试场景）
+InitTestScene*.unity*
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Addressables 默认忽略（地址化资产构建文件）
+/ServerData
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/AddressableAssetsData/link.xml*
+/[Aa]ssets/Addressables_Temp*
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+
+# Visual Scripting 自动生成的文件（视觉脚本生成内容）
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+# 如果需要忽略Asset Store工具插件，请取消注释以下行
+# /[Aa]ssets/AssetStoreTools*
