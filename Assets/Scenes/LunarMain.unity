@@ -6187,6 +6187,7 @@ GameObject:
   - component: {fileID: 1328898110}
   - component: {fileID: 1328898109}
   - component: {fileID: 1328898108}
+  - component: {fileID: 1328898111}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -6269,6 +6270,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1328898111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328898107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55e240b0980c154db24391a197dd28c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTag: Enemy
 --- !u!1 &1352313702
 GameObject:
   m_ObjectHideFlags: 0
@@ -6299,6 +6313,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  score: 0
+  onScoreChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  lives: 10
+  onLivesChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onLivesDepleted:
+    m_PersistentCalls:
+      m_Calls: []
   onStateChanged:
     m_PersistentCalls:
       m_Calls: []

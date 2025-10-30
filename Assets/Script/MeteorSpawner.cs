@@ -4,9 +4,6 @@ using System.Collections.Generic;  // 用于 List
 
 public class MeteorSpawner : MonoBehaviour
 {
-    [Header("GameManager 引用")]
-    public GameManager gameManager;    // 拖拽 GameManager 对象到此字段
-
     [Header("菜单模式设置 (Menu)")]
     public GameObject[] menuPrefabs;   // 菜单模式下的多种预制体数组（e.g., 背景粒子或演示陨石）
     public float menuSpawnInterval = 0.5f;  // 菜单模式生成间隔（秒）
@@ -28,23 +25,23 @@ public class MeteorSpawner : MonoBehaviour
 
     void Start()
     {
-        if (gameManager == null)
+        if (GameManager.Instance == null)
         {
-            Debug.LogError("MeteorSpawner 需要引用 GameManager！");
+            Debug.LogError("MeteorSpawner 需要 GameManager.Instance 已初始化！");
             return;
         }
 
-        lastState = gameManager.currentState;  // 初始记录状态
-        HandleStateChange(gameManager.currentState);  // 初始处理
+        lastState = GameManager.Instance.GetState();  // 初始记录状态
+        HandleStateChange(GameManager.Instance.GetState());  // 初始处理
     }
 
     void Update()
     {
         // 每帧检查 GameManager 状态变化
-        if (gameManager.currentState != lastState)
+        if (GameManager.Instance.GetState() != lastState)
         {
-            HandleStateChange(gameManager.currentState);
-            lastState = gameManager.currentState;
+            HandleStateChange(GameManager.Instance.GetState());
+            lastState = GameManager.Instance.GetState();
         }
     }
 

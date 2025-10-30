@@ -13,6 +13,13 @@ public class SpeedCollisionDestroyer : MonoBehaviour
 
         if (relativeSpeed > minRelativeSpeed)
         {
+            // 检查游戏是否在进行中（可选，避免菜单或结束时加分）
+            if (GameManager.Instance != null && GameManager.Instance.IsPlaying())
+            {
+                GameManager.Instance.AddScore(10);  // 每次有效碰撞增加 10 分
+                Debug.Log("销毁加分：+10，当前分数：" + GameManager.Instance.GetScore());
+            }
+
             ContactPoint contact = collision.contacts[0];
             Vector3 collisionPoint = contact.point;
 
