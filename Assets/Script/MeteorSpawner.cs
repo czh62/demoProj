@@ -10,7 +10,6 @@ public class MeteorSpawner : MonoBehaviour
 
     [Header("游戏模式设置 (Playing)")]
     public GameObject[] gamePrefabs;     // 游戏模式下的另一种预制体数组（e.g., 游戏敌人）
-    public float gameSpawnInterval = 1f;    // 游戏模式生成间隔（秒，可选调整）
 
     [Header("通用设置")]
     public float minSpeed = 50f;         // 最小速度
@@ -61,8 +60,20 @@ public class MeteorSpawner : MonoBehaviour
 
         // Menu 或 Playing：切换预制体并清理旧物体（如果模式不同）
         GameObject[] newPrefabs = (newState == GameManager.GameState.Playing) ? gamePrefabs : menuPrefabs;
-        float newInterval = (newState == GameManager.GameState.Playing) ? gameSpawnInterval : menuSpawnInterval;
-        Debug.Log(newInterval);
+        float newInterval;
+
+        if (newState == GameManager.GameState.Playing)
+        {
+            float difficulty = GameManager.Instance.GetDifficulty();
+            newInterval = 1.5f - (difficulty * 1.0f);
+            newInterval = Mathf.Max(newInterval, 0.1f);  // 防止间隔过小
+            Debug.Log($"游戏模式生成间隔（难度 {difficulty}）：{newInterval} 秒");
+        }
+        else
+        {
+            newInterval = menuSpawnInterval;
+        }
+
         // 停止当前协程
         if (spawnCoroutine != null)
         {
